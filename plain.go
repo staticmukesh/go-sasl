@@ -50,6 +50,7 @@ func (p *plainClient) EvaluateChallenge(challenge []byte) ([]byte, error) {
 	resp = append(resp, p.separator)
 	resp = append(resp, p.password...)
 
+	p.completed = true
 	return resp, nil
 }
 
@@ -63,14 +64,17 @@ func (p *plainClient) Unwrap(data []byte) ([]byte, error) {
 	return nil, errPlainNotSupported
 }
 
+// IsComplete returns whether the mechanism is complete
 func (p *plainClient) IsComplete() bool {
 	return p.completed
 }
 
+// Mechanism returns this mechanism's name
 func (p *plainClient) Mechanism() string {
-	return "PLAIN"
+	return PLAIN
 }
 
+// HasInitialResponse returns whether mechanism has an initial response.
 func (p *plainClient) HasInitialResponse() bool {
 	return true
 }
