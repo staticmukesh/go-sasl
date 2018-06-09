@@ -9,6 +9,8 @@ const (
 	PLAIN = "plain"
 	// EXTERNAL represents external mechanism
 	EXTERNAL = "external"
+	// DIGEST_MD5 represents digest-md5 mechanism
+	DIGEST_MD5 = "digest-md5"
 )
 
 // Client is SASL client interface
@@ -33,6 +35,10 @@ func NewClient(mech string, options Options) (Client, error) {
 	switch strings.ToLower(mech) {
 	case PLAIN:
 		return NewPlainClient(options.AuthenticationID, options.AuthorizationID, options.Password)
+	case EXTERNAL:
+		return NewExternalClient(options.AuthorizationID)
+	case DIGEST_MD5:
+		return NewDigestMD5Client()
 	default:
 		return NewExternalClient(options.AuthorizationID)
 	}
